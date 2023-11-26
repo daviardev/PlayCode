@@ -9,30 +9,21 @@ html {
   margin: 0;
   padding: 0;
   background: #1e1e1e;
-  font-family: 'Fira Code';
+  font-family: 'Fira Code', sans-serif;
 }
 
 #root {
   padding: 0;
 }
 
-.container {
-  width: 100%;
-  display: flex;
-
-  & > div {
-    width: 50%;
-    height: 100vh;
-    /* width: 100%;
-    resize: horizontal;
-    overflow: hidden; */
-  }
-}
-
 .editor {
   width: 100%;
   height: 100%;
   padding: 24px 0;
+}
+
+.split {
+  height: 100vh;
 }
 
 #output {
@@ -44,31 +35,43 @@ html {
   text-align: left;
   line-height: 19px;
   white-space: pre;
-  border-left: 1px solid #3f3f3f;
 }
 
-@media screen and (max-width: 1080px) {
-  .container > div {
-    width: 25%;
+.version {
+  right: 0;
+  color: #dcdcdc;
+  bottom: 0;
+  padding: 12px;
+  position: fixed;
+  font-size: 12px;
+}
 
-    & > div:first-child {
-      min-width: 75%;
-    }
+@media screen and (min-width: 480px) {
+  .split {
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .gutter.gutter-horizontal {
+    cursor: col-resize;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);
   }
 }
 
-@media screen and (max-width: 860px) {
-  .container {
-    flex-direction: column;
+.gutter {
+  background-color: #3f3f3f;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
 
-    & > div {
-      width: 100%;
-      height: 50vh;
-    }
+.gutter.gutter-vertical {
+  cursor: row-resize;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=);
+}
 
-    #output {
-      border-top: 1px solid #3f3f3f;
-      border-left: none;
-    }
+@media scren and (max-wdith: 480px) {
+  #output {
+    padding: 24px 0 0 32px;
   }
 }
