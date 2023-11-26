@@ -4,11 +4,21 @@ import { $$ } from './libs/dom'
 
 import Editor from '@monaco-editor/react'
 
-const DEFAULT_VALUE = `
-// Bienvenido a JS Play Code - Un Playground de JavaScript en la Web
+import { encode, decode } from 'js-base64'
 
+const UpdateURL = code => {
+  const hashedCode = encode(code)
+  window.history.replaceState(null, null, `/${hashedCode}`)
+}
+
+const { pathname } = window.location
+const hashCode = pathname.slice(1)
+
+const DEFAULT_VALUE = hashCode
+  ? decode(hashCode)
+  : `// Bienvenido a JS Play Code - Un Playground de JavaScript en la Web
+  
 const HelloWorld = () => '👋🌎'
-
 HelloWorld()`
 
 let throttlePause
@@ -36,13 +46,14 @@ const App = () => {
 
   const ShowResult = () => {
     const code = editorRef.current.getValue()
-    const lines = code.trim().split(/\r?\n|\r|\n/g).length
+    UpdateURL(code)
 
     if (!code) {
       $$('#output').innerHTML = ''
       return
     }
 
+    const lines = code.trim().split(/\r?\n|\r|\n/g).length
     let result = window.innerWidth > 860 ? '\n'.repeat(lines - 1) : ''
 
     try {
