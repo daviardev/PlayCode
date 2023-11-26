@@ -4,6 +4,13 @@ import { $$ } from './libs/dom'
 
 import Editor from '@monaco-editor/react'
 
+const DEFAULT_VALUE = `
+// Bienvenido a JS Play Code - Un Playground de JavaScript en la Web
+
+const HelloWorld = () => '👋🌎'
+
+HelloWorld()`
+
 let throttlePause
 
 const Throttle = (callback, time) => {
@@ -23,43 +30,45 @@ const App = () => {
   const HandleInit = editor => {
     editorRef.current = editor
     editor.focus()
+
+    editor.getValue() && ShowResult()
   }
 
   const ShowResult = () => {
-    $$('#output').innerHTML = ''
-
     const code = editorRef.current.getValue()
     const lines = code.trim().split(/\r?\n|\r|\n/g).length
 
-    $$('#output').innerHTML = '\n'.repeat(lines - 1)
+    if (!code) {
+      $$('#output').innerHTML = ''
+      return
+    }
+
+    let result = window.innerWidth > 860 ? '\n'.repeat(lines - 1) : ''
 
     try {
       const html = eval(code)
 
-      if (!html && html !== false && html !== 0) {
-        $$('#output').innerHTML = ''
-      }
-
       switch (typeof html) {
         case 'object':
-          $$('#output').innerHTML += JSON.stringify(html)
+          result += JSON.stringify(html)
           break
 
         case 'string':
-          $$('#output').innerHTML += `'${html}'`
+          result += `'${html}'`
           break
 
         case 'function':
-          $$('#output').innerHTML += html()
+          result += html()
           break
 
         default:
-          $$('#output').innerHTML += html
+          result += html
           break
       }
     } catch (err) {
-      $$('#output').innerHTML += err
+      result += err
     }
+    $$('#output').innerHTML = result
   }
 
   const HandleEditorChange = () => {
@@ -74,6 +83,7 @@ const App = () => {
             language='javascript'
             theme='vs-dark'
             onMount={HandleInit}
+            defaultValue={DEFAULT_VALUE}
             onChange={HandleEditorChange}
             loading=''
             options={{
