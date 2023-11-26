@@ -1,3 +1,5 @@
+@import url(./css/fonts.css);
+
 * {
   box-sizing: border-box;
 }
@@ -7,6 +9,7 @@ html {
   margin: 0;
   padding: 0;
   background: #1e1e1e;
+  font-family: 'Fira Code';
 }
 
 #root {
@@ -19,6 +22,7 @@ html {
 
   & > div {
     width: 50%;
+    height: 100vh;
     /* width: 100%;
     resize: horizontal;
     overflow: hidden; */
@@ -27,18 +31,44 @@ html {
 
 .editor {
   width: 100%;
-  height: calc(100vh - 24px);
-  padding: 6px 0;
+  height: 100%;
+  padding: 24px 0;
 }
 
 #output {
   width: 100%;
   height: 100%;
   color: #dcdcdc;
-  padding: 6px 12px;
+  padding: 24px 12px 0 12px;
   font-size: 14px;
   text-align: left;
   line-height: 19px;
   white-space: pre;
   border-left: 1px solid #3f3f3f;
+}
+
+@media screen and (max-width: 1080px) {
+  .container > div {
+    width: 25%;
+
+    & > div:first-child {
+      min-width: 75%;
+    }
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .container {
+    flex-direction: column;
+
+    & > div {
+      width: 100%;
+      height: 50vh;
+    }
+
+    #output {
+      border-top: 1px solid #3f3f3f;
+      border-left: none;
+    }
+  }
 }
