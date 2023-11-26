@@ -1,7 +1,7 @@
 {
   "name": "js-play-code",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,8 @@
     "@monaco-editor/react": "^4.6.0",
     "js-base64": "^3.7.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-split": "^2.0.14"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
