@@ -4,6 +4,18 @@
   box-sizing: border-box;
 }
 
+button {
+  color: #dcdcdc;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background: none;
+
+  &:hover {
+    color: #99999999;
+  }
+}
+
 body,
 html {
   margin: 0;
@@ -63,6 +75,14 @@ html {
   background-color: #3f3f3f;
   background-repeat: no-repeat;
   background-position: 50%;
+}
+
+.toolbar {
+  left: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 12px;
+  position: fixed;
 }
 
 .gutter.gutter-vertical {
