@@ -65,6 +65,10 @@ html {
     flex-direction: row;
   }
 
+  .gutter {
+    height: 100% !important;
+  }
+
   .gutter.gutter-horizontal {
     cursor: col-resize;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==);
