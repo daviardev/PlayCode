@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import { $$ } from './libs/dom'
 
@@ -20,6 +20,9 @@ const App = () => {
   const WIDTH_MOBILE = 480
 
   const isMobile = size.width < WIDTH_MOBILE
+
+  const [lines, setLines] = useState(0)
+  const [direction, setDirection] = useState(isMobile ? 'vertical' : 'horizontal')
 
   window.console.log = (...data) => {
     return ParseResultHTML(...data)
@@ -99,6 +102,8 @@ const App = () => {
     }
     let result = ''
 
+    setLines(code.split(/\r?\n|\r|\n/g).length)
+
     code
       .trimEnd()
       .split(/\r?\n|\r|\n/g)
@@ -176,7 +181,7 @@ const App = () => {
       </div>
       <Split
         className='split'
-        direction={isMobile ? 'vertical' : 'horizontal'}
+        direction={direction}
         minSize={200}
         gutterSize={isMobile ? 6 : 3}
       >
@@ -192,6 +197,8 @@ const App = () => {
             options={{
               automaticLayout: true,
               formatOnPaste: true,
+              fontLigatures: true,
+              fontFamily: 'Fira Code',
               minimap: {
                 enabled: false
               },
@@ -210,14 +217,39 @@ const App = () => {
             <button
               className='button-toolbar'
               onClick={FormatDocument}
-              title='Format document'
+              title='Dar formato'
             >
               <FormatIcon />
             </button>
           </div>
         </div>
-
-        <div>
+        <div style={{
+          display: 'flex',
+          paddingTop: '24px'
+        }}
+        >
+          <div
+            style={{
+              paddingTop: '12px',
+              width: '68px',
+              textAlign: 'center'
+            }}
+          >
+            {Array.from(Array(lines).keys()).map((index) => {
+              return (
+                <span
+                  key={index} style={{
+                    display: 'block',
+                    width: '68px',
+                    color: '#858585',
+                    fontSize: '14px',
+                    lineHeight: '19px'
+                  }}
+                >{index + 1}
+                </span>
+              )
+            })}
+          </div>
           <div id='output' />
         </div>
       </Split>
