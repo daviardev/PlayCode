@@ -2,10 +2,11 @@ import { useRef } from 'react'
 
 import { $$ } from './libs/dom'
 
-import Split from 'react-split'
-import Editor from '@monaco-editor/react'
+import Header from './components/Header'
 
-import packageVersion from '../package.json'
+import Split from 'react-split'
+import Linter from 'monaco-js-linter'
+import Editor from '@monaco-editor/react'
 
 import { useWindowSize } from './hooks/useWindowSize'
 
@@ -15,6 +16,8 @@ const App = () => {
   const editorRef = useRef(null)
   const size = useWindowSize()
   const WIDTH_MOBILE = 480
+
+  let linter
 
   const isMobile = size.width < WIDTH_MOBILE
 
@@ -31,8 +34,6 @@ const App = () => {
       return null
     }
   }
-
-  const { version } = packageVersion
 
   const DEFAULT_VALUE = GetCodeFromURL() || `// Bienvenido a JS Play Code - Un Playground de JavaScript en la Web
   
@@ -62,11 +63,19 @@ const App = () => {
     editorRef.current.getAction('editor.action.formatDocument').run()
   }
 
-  const HandleInit = editor => {
+  const HandleInit = (editor, monaco) => {
     editorRef.current = editor
+
+    linter = new Linter(editor, monaco, {
+      esversion: 11
+    })
     editor.focus()
 
     editor.getValue() && ShowResult()
+  }
+
+  const ToggleLinter = () => {
+    linter.watch()
   }
 
   const ShowResult = () => {
@@ -79,27 +88,35 @@ const App = () => {
     }
     let result = ''
 
-    code.trimEnd().split(/\r?\n|\r|\n/g).reduce((acc, line) => {
-      if (line.trim() === '') {
-        result += '\n'
-        return acc + '\n'
-      }
-      if (line || line === '' || !line.startsWith(/\/\//) || !line.startsWith(/\/*/)) {
-        try {
-          const htmlPart = acc + line
-          const html = eval(htmlPart)
+    code
+      .trimEnd()
+      .split(/\r?\n|\r|\n/g)
+      .reduce((acc, line) => {
+        if (line.trim() === '') {
+          result += '\n'
+          return acc + '\n'
+        }
 
-          result += ParseResultHTML(html) + '\n'
-        } catch (err) {
-          if (err.toString().match(/ReferenceError/gi)) {
-            result += err + '\n'
-          } else {
+        const htmlPart = acc + line
+
+        if (
+          line ||
+          line === '' ||
+          !line.startsWith(/\/\//) ||
+          !line.startsWith(/\/*/)
+        ) {
+          try {
+            const html = eval(htmlPart)
+            result += ParseResultHTML(html) + '\n'
+          } catch (err) {
+            if (err.toString().match(/ReferenceError/gi)) {
+              result += err
+            }
             result += '\n'
           }
         }
-      }
-      return acc + line + '\n'
-    }, '')
+        return htmlPart + '\n'
+      }, '')
 
     $$('#output').innerHTML = result
   }
@@ -129,6 +146,7 @@ const App = () => {
   }
   return (
     <>
+      <Header />
       <div className='toolbar'>
         <button
           onClick={FormatDocument}
@@ -149,12 +167,15 @@ const App = () => {
             />
           </svg>
         </button>
+        <button onClick={ToggleLinter} title='Dar formato'>
+          Linter
+        </button>
       </div>
       <Split
         className='split'
         direction={isMobile ? 'vertical' : 'horizontal'}
         minSize={200}
-        gutterSize={isMobile ? 6 : 2}
+        gutterSize={isMobile ? 6 : 3}
       >
         <div>
           <Editor
@@ -188,7 +209,6 @@ const App = () => {
           <div id='output' />
         </div>
       </Split>
-      <div className='version'>v.{version}</div>
     </>
   )
 }
