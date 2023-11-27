@@ -31,7 +31,7 @@ html {
 .editor {
   width: 100%;
   height: 100%;
-  padding: 24px 0;
+  padding: 24px 0 48px;
 }
 
 .split {
@@ -42,7 +42,6 @@ html {
   width: 100%;
   height: 100%;
   color: #dcdcdc;
-  padding: 24px 12px 0 12px;
   font-size: 14px;
   text-align: left;
   line-height: 19px;
@@ -187,6 +186,6 @@ html {
 
 @media scren and (max-wdith: 480px) {
   #output {
-    padding: 24px 0 0 32px;
+    /* padding: 12px 0 0 0; */
   }
 }
