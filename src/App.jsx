@@ -3,6 +3,8 @@ import { useRef } from 'react'
 import { $$ } from './libs/dom'
 
 import Header from './components/Header'
+import ShareIcon from './components/Share'
+import FormatIcon from './components/FormatDocument'
 
 import Split from 'react-split'
 import Linter from 'monaco-js-linter'
@@ -78,6 +80,11 @@ const App = () => {
     linter.watch()
   }
 
+  const ShareURL = () => {
+    const url = window.location.href
+    navigator.clipboard.writeText(url)
+  }
+
   const ShowResult = () => {
     const code = editorRef.current.getValue()
     UpdateURL(code)
@@ -149,26 +156,11 @@ const App = () => {
       <Header />
       <div className='toolbar'>
         <button
-          onClick={FormatDocument}
-          title='Dar formato al documento'
+          onClick={ShareURL}
+          className='button-toolbar'
+          title='Compartir código'
         >
-          <svg
-            width='24'
-            height='24'
-            viewBox='0 0 32 32'
-            xmlns='http://www.w3.org/2000/svg'
-            fill='currentColor'
-          >
-            <path d='M14 6h14v2H14zm0 6h14v2H14zm-7 6h21v2H7zm0 6h21v2H7zM4 13.59 7.29 10 4 6.41 5.42 5l4.62 5-4.62 5L4 13.59z' />
-            <path
-              data-name='&lt;Transparent Rectangle&gt;'
-              d='M0 0h32v32H0z'
-              fill='none'
-            />
-          </svg>
-        </button>
-        <button onClick={ToggleLinter} title='Dar formato'>
-          Linter
+          <ShareIcon />
         </button>
       </div>
       <Split
@@ -203,6 +195,15 @@ const App = () => {
               }
             }}
           />
+          <div className='editor-toolbar'>
+            <button
+              className='button-toolbar'
+              onClick={FormatDocument}
+              title='Format document'
+            >
+              <FormatIcon />
+            </button>
+          </div>
         </div>
 
         <div>
