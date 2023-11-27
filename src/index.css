@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-button {
+.button-toolbar {
   color: #dcdcdc;
   border: none;
   cursor: pointer;
@@ -72,11 +72,23 @@ html {
   background-position: 50%;
 }
 
-.toolbar {
+.editor-toolbar {
+  gap: 5px;
   left: 0;
   bottom: 0;
+  display: flex;
   z-index: 1;
   padding: 12px;
+  position: fixed;
+}
+
+.toolbar {
+  top: 5px;
+  right: 5px;
+  gap: 5px;
+  z-index: 1;
+  padding: 12px;
+  display: flex;
   position: fixed;
 }
 
@@ -117,7 +129,7 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    filter: blur(12px);
+    filter: blur(20px);
     bottom: 0;
     opacity: .5;
     content: '';
