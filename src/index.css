@@ -35,7 +35,7 @@ html {
 }
 
 .split {
-  height: 100vh;
+  height: calc(100vh - 59px);
 }
 
 #output {
@@ -47,15 +47,6 @@ html {
   text-align: left;
   line-height: 19px;
   white-space: pre;
-}
-
-.version {
-  right: 0;
-  color: #dcdcdc;
-  bottom: 0;
-  padding: 12px;
-  position: fixed;
-  font-size: 12px;
 }
 
 @media screen and (min-width: 480px) {
@@ -87,6 +78,94 @@ html {
   z-index: 1;
   padding: 12px;
   position: fixed;
+}
+
+.logo {
+  gap: 8px;
+  padding: 12px;
+  display: flex;
+  box-shadow: 0 0 12px 0 #3f3f3f;
+  align-items: center;
+  background-color: #1a1a1a;
+
+  & svg {
+    z-index: 1;
+    position: relative;
+    margin-top: 5px;
+  }
+
+  & .title {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 800;
+  }
+  
+  & .version {
+    color: #707070;
+    font-size: 10px;
+    margin-top: 10px;
+  }
+}
+
+
+.gradient {
+  position: relative;
+
+  &::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    filter: blur(12px);
+    bottom: 0;
+    opacity: .5;
+    content: '';
+    position: absolute;
+    background: linear-gradient(1deg, #fff95b 0%, #ff930f 100%);
+    transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+
+  &::after {
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: inherit;
+  }
+}
+
+.gradient {
+  position: relative;
+
+  &::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    filter: blur(12px);
+    opacity: .5;
+    content: '';
+    position: absolute;
+    background: linear-gradient(1deg, #fff95b 0%, #ff930f 100%);
+    transition: opacity .3s;
+    border-radius: inherit;
+  }
+
+  &::after {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: inherit;
+  }
 }
 
 .gutter.gutter-vertical {
