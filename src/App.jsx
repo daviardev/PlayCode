@@ -5,9 +5,9 @@ import { $$ } from './libs/dom'
 import Header from './components/Header'
 import ShareIcon from './components/Share'
 import FormatIcon from './components/FormatDocument'
+import DownloadIcon from './components/DownloadIcon'
 
 import Split from 'react-split'
-import Linter from 'monaco-js-linter'
 import Editor from '@monaco-editor/react'
 
 import { useWindowSize } from './hooks/useWindowSize'
@@ -18,8 +18,6 @@ const App = () => {
   const editorRef = useRef(null)
   const size = useWindowSize()
   const WIDTH_MOBILE = 480
-
-  let linter
 
   const isMobile = size.width < WIDTH_MOBILE
 
@@ -65,24 +63,30 @@ const App = () => {
     editorRef.current.getAction('editor.action.formatDocument').run()
   }
 
-  const HandleInit = (editor, monaco) => {
+  const HandleInit = (editor) => {
     editorRef.current = editor
-
-    linter = new Linter(editor, monaco, {
-      esversion: 11
-    })
     editor.focus()
 
     editor.getValue() && ShowResult()
   }
 
-  const ToggleLinter = () => {
-    linter.watch()
-  }
-
   const ShareURL = () => {
     const url = window.location.href
     navigator.clipboard.writeText(url)
+  }
+
+  const DownloadCode = () => {
+    const code = editorRef.current.getValue()
+    const blob = new Blob([code], {
+      type: 'text/plain'
+    })
+
+    const url = window.URL.createObjectURL(blob)
+    const links = document.createElement('a')
+
+    links.download = 'main.js'
+    links.href = url
+    links.click()
   }
 
   const ShowResult = () => {
@@ -161,6 +165,13 @@ const App = () => {
           title='Compartir código'
         >
           <ShareIcon />
+        </button>
+        <button
+          className='button-toolbar'
+          onClick={DownloadCode}
+          title='Decargar código'
+        >
+          <DownloadIcon />
         </button>
       </div>
       <Split
