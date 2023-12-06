@@ -1,16 +1,16 @@
 import { useRef, useState } from 'react'
 
-import { $$ } from './libs/dom'
+import { $$ } from '@/libs/dom'
 
-import Header from './components/Header'
-import ShareIcon from './components/Share'
-import FormatIcon from './components/FormatDocument'
-import DownloadIcon from './components/DownloadIcon'
+import Header from '@/components/Header'
+import ShareIcon from '@/components/Share'
+import FormatIcon from '@/components/FormatDocument'
+import DownloadIcon from '@/components/DownloadIcon'
 
 import Split from 'react-split'
 import Editor from '@monaco-editor/react'
 
-import { useWindowSize } from './hooks/useWindowSize'
+import { useWindowSize } from '@/hooks/useWindowSize'
 
 import { encode, decode } from 'js-base64'
 
