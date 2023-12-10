@@ -5,10 +5,13 @@
 }
 
 .button-toolbar {
-  color: #dcdcdc;
+  gap: 8px;
+  color: #616161;
+  align-items: center;
   border: none;
   cursor: pointer;
   padding: 0;
+  display: flex;
   background: none;
 
   &:hover {
@@ -45,7 +48,7 @@ html {
   font-size: 14px;
   text-align: left;
   line-height: 19px;
-  white-space: pre;
+  white-space: pre;                                                                     
 }
 
 .badge {
@@ -96,7 +99,7 @@ html {
 }
 
 .editor-toolbar {
-  gap: 8px;
+  gap: 16px;
   left: 0;
   bottom: 0;
   display: flex;
