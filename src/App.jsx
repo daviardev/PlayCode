@@ -101,6 +101,8 @@ const App = () => {
       return
     }
     let result = ''
+    let prevLines = ''
+    let prevResult = ''
 
     setLines(code.split(/\r?\n|\r|\n/g).length)
 
@@ -113,7 +115,7 @@ const App = () => {
           return acc + '\n'
         }
 
-        const htmlPart = acc + line
+        const lineCode = acc + line
 
         if (
           line ||
@@ -122,8 +124,14 @@ const App = () => {
           !line.startsWith(/\/*/)
         ) {
           try {
-            const html = eval(htmlPart)
-            result += ParseResultHTML(html) + '\n'
+            const html = eval(lineCode)
+
+            if (prevLines !== '' && line !== '' && prevLines !== line && prevResult === html) {
+              result += '\n'
+            } else {
+              result += ParseResultHTML(html) + '\n'
+            }
+            prevResult = html
           } catch (err) {
             if (err.toString().match(/ReferenceError/gi)) {
               result += err
@@ -131,7 +139,9 @@ const App = () => {
             result += '\n'
           }
         }
-        return htmlPart + '\n'
+
+        prevLines = line
+        return lineCode + '\n'
       }, '')
 
     $$('#output').innerHTML = result
@@ -253,6 +263,9 @@ const App = () => {
           <div id='output' />
         </div>
       </Split>
+      <section className='credits'>
+        <a href='https://github.com/daviardev' target='_blank' rel='noreferrer'>daviardev</a>
+      </section>
     </>
   )
 }
