@@ -3,9 +3,8 @@ import { useRef, useState } from 'react'
 import { $$ } from '@/libs/dom'
 
 import Header from '@/components/Header'
-import ShareIcon from '@/components/Share'
-import FormatIcon from '@/components/FormatDocument'
-import DownloadIcon from '@/components/DownloadIcon'
+
+import { FormatIcon, DownloadIcon, ShareIcon } from '@/components/Icons'
 
 import Split from 'react-split'
 import Editor from '@monaco-editor/react'
