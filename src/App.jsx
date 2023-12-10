@@ -11,6 +11,7 @@ import Editor from '@monaco-editor/react'
 
 import { useWindowSize } from '@/hooks/useWindowSize'
 
+import { toast, Toaster } from 'sonner'
 import { encode, decode } from 'js-base64'
 
 const App = () => {
@@ -20,8 +21,8 @@ const App = () => {
 
   const isMobile = size.width < WIDTH_MOBILE
 
+  const direction = isMobile ? 'vertical' : 'horizontal'
   const [lines, setLines] = useState(0)
-  const [direction, setDirection] = useState(isMobile ? 'vertical' : 'horizontal')
 
   window.console.log = (...data) => {
     return ParseResultHTML(...data)
@@ -75,6 +76,8 @@ const App = () => {
   const ShareURL = () => {
     const url = window.location.href
     navigator.clipboard.writeText(url)
+
+    toast.success('El enlace se ha copiado al portapapeles')
   }
 
   const DownloadCode = () => {
@@ -171,6 +174,7 @@ const App = () => {
   }
   return (
     <>
+      <Toaster position='top-center' />
       <Header />
       <div className='toolbar'>
         <button
