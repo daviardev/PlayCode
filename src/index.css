@@ -109,8 +109,8 @@ html {
 }
 
 .toolbar {
-  top: 5px;
-  right: 5px;
+  top: 16px;
+  right: 16px;
   gap: 5px;
   z-index: 1;
   padding: 12px;
