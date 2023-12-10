@@ -48,6 +48,30 @@ html {
   white-space: pre;
 }
 
+.badge {
+  color: #3f3f3f;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.credits {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  padding: 12px;
+
+  & a {
+    color: #616161;
+    font-size: 11px;
+    text-decoration: none;
+
+    &:hover {
+      color: #99999999;
+    }
+  }
+}
+
 @media screen and (min-width: 480px) {
   .split {
     height: 100vh;
