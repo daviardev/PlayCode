@@ -25,7 +25,7 @@ const Logo = (props) => {
         </svg>
       </div>
       <h1 className='title'>JS Play Code</h1>
-      <span className='version'>v.{version}</span>
+      <span className='version'>v.{version} <span className='badge'>BETA</span></span>
     </div>
   )
 }
