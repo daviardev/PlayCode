@@ -1,17 +1,19 @@
 import { useRef, useState } from 'react'
 
-import { $$ } from '@/libs/dom'
-
 import Header from '@/components/Header'
+import Button from '@/components/Button'
+import Share from '@/components/Share'
+import Footer from '@/components/Footer'
+import Console from '@/components/Console'
 
-import { FormatIcon, DownloadIcon, ShareIcon } from '@/components/Icons'
+import { FormatIcon, DownloadIcon } from '@/components/Icons'
 
 import Split from 'react-split'
 import Editor from '@monaco-editor/react'
 
 import { useWindowSize } from '@/hooks/useWindowSize'
 
-import { toast, Toaster } from 'sonner'
+import { Toaster } from 'sonner'
 import { encode, decode } from 'js-base64'
 
 const App = () => {
@@ -23,6 +25,7 @@ const App = () => {
 
   const direction = isMobile ? 'vertical' : 'horizontal'
   const [lines, setLines] = useState(0)
+  const [result, setResult] = useState('')
 
   window.console.log = (...data) => {
     return ParseResultHTML(...data)
@@ -63,7 +66,8 @@ const App = () => {
   }
 
   const FormatDocument = () => {
-    editorRef.current.getAction('editor.action.formatDocument').run()
+    const editor = editorRef.current
+    editor.current.getAction('editor.action.formatDocument').run()
   }
 
   const HandleInit = (editor) => {
@@ -73,15 +77,9 @@ const App = () => {
     editor.getValue() && ShowResult()
   }
 
-  const ShareURL = () => {
-    const url = window.location.href
-    navigator.clipboard.writeText(url)
-
-    toast.success('El enlace se ha copiado al portapapeles')
-  }
-
   const DownloadCode = () => {
-    const code = editorRef.current.getValue()
+    const editor = editorRef.current
+    const code = editor.getValue()
     const blob = new Blob([code], {
       type: 'text/plain'
     })
@@ -95,11 +93,13 @@ const App = () => {
   }
 
   const ShowResult = () => {
-    const code = editorRef.current.getValue()
+    const editor = editorRef.current
+    const code = editor.getValue()
+
     UpdateURL(code)
 
     if (!code) {
-      $$('#output').innerHTML = ''
+      setResult('')
       return
     }
     let result = ''
@@ -146,7 +146,7 @@ const App = () => {
         return lineCode + '\n'
       }, '')
 
-    $$('#output').innerHTML = result
+    setResult(result)
   }
 
   const ParseResultHTML = html => {
@@ -174,23 +174,13 @@ const App = () => {
   }
   return (
     <>
-      <Toaster position='top-center' />
+      <Toaster
+        duration={1000}
+        position='top-center'
+      />
       <Header />
       <div className='toolbar'>
-        <button
-          onClick={ShareURL}
-          className='button-toolbar'
-          title='Compartir código'
-        >
-          <ShareIcon />
-        </button>
-        <button
-          className='button-toolbar'
-          onClick={DownloadCode}
-          title='Decargar código'
-        >
-          <DownloadIcon />
-        </button>
+        <Share />
       </div>
       <Split
         className='split'
@@ -227,48 +217,26 @@ const App = () => {
             }}
           />
           <div className='editor-toolbar'>
-            <button
-              className='button-toolbar'
+            <Button
               onClick={FormatDocument}
               title='Dar formato'
             >
-              <FormatIcon />
-            </button>
+              <FormatIcon /> Dar formato
+            </Button>
+            <Button
+              onClick={DownloadCode}
+              title='Descar el código en un archivo'
+            >
+              <DownloadIcon /> Descargar
+            </Button>
           </div>
         </div>
-        <div style={{
-          display: 'flex',
-          paddingTop: '24px'
-        }}
-        >
-          <div
-            style={{
-              paddingTop: '12px',
-              width: '68px',
-              textAlign: 'center'
-            }}
-          >
-            {Array.from(Array(lines).keys()).map((index) => {
-              return (
-                <span
-                  key={index} style={{
-                    display: 'block',
-                    width: '68px',
-                    color: '#858585',
-                    fontSize: '14px',
-                    lineHeight: '19px'
-                  }}
-                >{index + 1}
-                </span>
-              )
-            })}
-          </div>
-          <div id='output' />
-        </div>
+        <Console
+          lines={lines}
+          result={result}
+        />
       </Split>
-      <section className='credits'>
-        <a href='https://github.com/daviardev' target='_blank' rel='noreferrer'>daviardev</a>
-      </section>
+      <Footer />
     </>
   )
 }
