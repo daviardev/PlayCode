@@ -6,6 +6,8 @@ import Share from '@/components/Share'
 import Footer from '@/components/Footer'
 import Console from '@/components/Console'
 
+import { DEFAULT_VALUE, WIDTH_MOBILE, EDITOR_OPTIONS } from './const'
+
 import { FormatIcon, DownloadIcon } from '@/components/Icons'
 
 import Split from 'react-split'
@@ -19,7 +21,6 @@ import { encode, decode } from 'js-base64'
 const App = () => {
   const editorRef = useRef(null)
   const size = useWindowSize()
-  const WIDTH_MOBILE = 480
 
   const isMobile = size.width < WIDTH_MOBILE
 
@@ -34,18 +35,14 @@ const App = () => {
   const GetCodeFromURL = () => {
     try {
       const { pathname } = window.location
+
       const hashCode = pathname.slice(1)
+
       return hashCode ? decode(hashCode) : null
-    } catch {
-      return null
+    } catch (err) {
+      console.error(err)
     }
   }
-
-  const DEFAULT_VALUE = GetCodeFromURL() || `// Bienvenido a JS Play Code - Un Playground de JavaScript en la Web
-  
-  const HelloWorld = () => '👋🌎'
-  HelloWorld()
-`
 
   let throttlePause
 
@@ -193,28 +190,11 @@ const App = () => {
             className='editor'
             language='javascript'
             theme='vs-dark'
-            defaultValue={DEFAULT_VALUE}
+            defaultValue={GetCodeFromURL() || DEFAULT_VALUE}
             onMount={HandleInit}
             onChange={HandleEditorChange}
             loading=''
-            options={{
-              automaticLayout: true,
-              formatOnPaste: true,
-              fontLigatures: true,
-              fontFamily: 'Fira Code',
-              minimap: {
-                enabled: false
-              },
-              inlineSuggest: {
-                enabled: true
-              },
-              overviewRulerLanes: 0,
-              scrollbar: {
-                vertical: 'hidden',
-                horizontal: 'hidden',
-                handleMouseWheel: false
-              }
-            }}
+            options={EDITOR_OPTIONS}
           />
           <div className='editor-toolbar'>
             <Button
