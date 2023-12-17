@@ -5,6 +5,7 @@ import Button from '@/components/Button'
 import Share from '@/components/Share'
 import Footer from '@/components/Footer'
 import Console from '@/components/Console'
+import Embed from '@/components/Embed'
 
 import { DEFAULT_VALUE, WIDTH_MOBILE, EDITOR_OPTIONS } from './const'
 
@@ -23,6 +24,8 @@ const App = () => {
   const size = useWindowSize()
 
   const isMobile = size.width < WIDTH_MOBILE
+
+  const isMainDomain = window.location.hostname === 'play-code.vercel.app'
 
   const direction = isMobile ? 'vertical' : 'horizontal'
   const [lines, setLines] = useState(0)
@@ -178,6 +181,9 @@ const App = () => {
       <Header />
       <div className='toolbar'>
         <Share />
+        {isMainDomain && (
+          <Embed />
+        )}
       </div>
       <Split
         className='split'
