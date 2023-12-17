@@ -41,7 +41,7 @@ html {
   height: calc(100vh - 59px);
 }
 
-#output {
+.console {
   width: 100%;
   height: 100%;
   color: #dcdcdc;
