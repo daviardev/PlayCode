@@ -24,10 +24,9 @@ const App = () => {
   const size = useWindowSize()
 
   const isMobile = size.width < WIDTH_MOBILE
-
-  const isMainDomain = window.location.hostname === 'play-code.vercel.app'
-
   const direction = isMobile ? 'vertical' : 'horizontal'
+  const gutterSize = isMobile ? 6 : 3
+
   const [lines, setLines] = useState(0)
   const [result, setResult] = useState('')
 
@@ -181,15 +180,13 @@ const App = () => {
       <Header />
       <div className='toolbar'>
         <Share />
-        {isMainDomain && (
-          <Embed />
-        )}
+        <Embed />
       </div>
       <Split
         className='split'
         direction={direction}
         minSize={200}
-        gutterSize={isMobile ? 6 : 3}
+        gutterSize={gutterSize}
       >
         <div>
           <Editor
@@ -207,13 +204,15 @@ const App = () => {
               onClick={FormatDocument}
               title='Dar formato'
             >
-              <FormatIcon /> Dar formato
+              <FormatIcon />
+              <span className='hidden sm:block'>Dar formato</span>
             </Button>
             <Button
               onClick={DownloadCode}
               title='Descar el código en un archivo'
             >
-              <DownloadIcon /> Descargar
+              <DownloadIcon />
+              <span className='hidden sm:block'>Descargar</span>
             </Button>
           </div>
         </div>

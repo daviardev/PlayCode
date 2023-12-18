@@ -17,7 +17,8 @@ export default function Share () {
       onClick={ShareURL}
       title='Compartir código'
     >
-      <ShareIcon /> Compartir
+      <ShareIcon />
+      <span className='hidden sm:block'>Compartir</span>
     </Button>
   )
 }

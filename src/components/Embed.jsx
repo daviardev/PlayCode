@@ -20,7 +20,13 @@ export default function Embed () {
     navigator.clipboard.writeText(textareaRef.current.value)
 
     toast.success('Copiado al portapapeles')
+
+    setModal(false)
   }
+
+  const isMainDomain = window.location.hostname === 'play-code.vercel.app' || window.location.hostname === 'localhost'
+
+  if (!isMainDomain) return null
 
   return (
     <>
@@ -28,7 +34,8 @@ export default function Embed () {
         onClick={HandleClick}
         title=''
       >
-        <EmbedIcon /> Embed
+        <EmbedIcon />
+        <span className='hidden sm:block'>Embed</span>
       </Button>
       {modal && (
         <section className='modal'>
