@@ -1,18 +1,8 @@
 export default function Console ({ lines, result }) {
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          paddingTop: '24px'
-        }}
-      >
-        <div
-          style={{
-            width: '68px',
-            textAlign: 'center'
-          }}
-        >
+      <div className='flex pt-[24px]'>
+        <div className='w-[68px] text-center'>
           {Array.from(Array(lines).keys()).map(index => {
             return (
               <span

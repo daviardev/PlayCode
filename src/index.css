@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --background: #1e1e1e;
+  --primary: #d4d4d4;
+}
+
 .button-toolbar {
   gap: 8px;
   color: #616161;
