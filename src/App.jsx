@@ -101,50 +101,43 @@ const App = () => {
       setResult('')
       return
     }
-    let result = ''
-    let prevLines = ''
-    let prevResult = ''
-
     setLines(code.split(/\r?\n|\r|\n/g).length)
 
-    code
-      .trimEnd()
-      .split(/\r?\n|\r|\n/g)
-      .reduce((acc, line) => {
-        if (line.trim() === '') {
+    let result = ''
+    let prevResult = ''
+
+    const codeLines = code.trimEnd().split(/\r?\n|\r|\n/g)
+
+    for (let i = 0; i < codeLines.length; i++) {
+      const line = codeLines[i].trim()
+
+      if (line === '') {
+        result += '\n'
+        continue
+      }
+
+      const lineCode = codeLines.slice(0, i + 1).join('\n')
+
+      if (line.startsWith('//') || line.startsWith('/*')) {
+        result += '\n'
+        continue
+      }
+
+      try {
+        const html = eval(lineCode)
+        if (i > 0 && line !== codeLines[i + 1].trim() && prevResult === html) {
           result += '\n'
-          return acc + '\n'
+        } else {
+          result += ParseResultHTML(html) + '\n'
         }
-
-        const lineCode = acc + line
-
-        if (
-          line ||
-          line === '' ||
-          !line.startsWith(/\/\//) ||
-          !line.startsWith(/\/*/)
-        ) {
-          try {
-            const html = eval(lineCode)
-
-            if (prevLines !== '' && line !== '' && prevLines !== line && prevResult === html) {
-              result += '\n'
-            } else {
-              result += ParseResultHTML(html) + '\n'
-            }
-            prevResult = html
-          } catch (err) {
-            if (err.toString().match(/ReferenceError/gi)) {
-              result += err
-            }
-            result += '\n'
-          }
+        prevResult = html
+      } catch (err) {
+        if (err instanceof ReferenceError) {
+          result += err
         }
-
-        prevLines = line
-        return lineCode + '\n'
-      }, '')
-
+        result += '\n'
+      }
+    }
     setResult(result)
   }
 
